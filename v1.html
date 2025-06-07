@@ -1,0 +1,122 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            color: #c4ffbb;
+            background-color: #393be6; /* Couleur de fond de la page */
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #c4ffbb;
+            color: #393be6;
+            border: none;
+            border-radius: 5px;
+        }
+        #question {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        #response {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #f4cf72;
+        }
+        #counter {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz</h1>
+    <button onclick="displayQuestion()">Afficher Question</button>
+    <div id="counter">0 / 50</div>
+    <div id="question"></div>
+    <div id="response"></div>
+
+    <script>
+        const questions = [
+            { question: "Quel est le synonyme du mot 'joyeux' ?", response: "Heureux" },
+            { question: "Comment sʼappelle le groupe de mots qui indique à qui ou à quoi sʼadresse lʼaction dans une phrase ?", response: "Le complément dʼobjet" },
+            { question: "Quel est le temps du verbe dans la phrase : 'Je mangeais une pomme' ?", response: "Imparfait" },
+            { question: "Donne un exemple de nom commun et un exemple de nom propre.", response: "Nom commun : chat / Nom propre : Paris" },
+            { question: "Quelle est la différence entre une phrase interrogative et une phrase exclamative ?", response: "Lʼinterrogative pose une question, lʼexclamative exprime une émotion forte." },
+            { question: "Combien y a-t-il de côtés dans un hexagone ?", response: "6" },
+            { question: "Quel est le résultat de 7 8 ?", response: "56" },
+            { question: "Comment appelle-t-on un nombre qui nʼa que deux diviseurs, 1 et lui-même ?", response: "Un nombre premier" },
+            { question: "Quelle est la moitié de 36 ?", response: "18" },
+            { question: "Combien de centimètres y a-t-il dans un mètre ?", response: "100" },
+            { question: "Quel est le nom du premier homme à avoir marché sur la Lune ?", response: "Neil Armstrong" },
+            { question: "Comment sʼappelle le fleuve qui traverse Paris ?", response: "La Seine" },
+            { question: "Quel peuple a construit les pyramides dʼÉgypte ?", response: "Les Égyptiens" },
+            { question: "En quelle année la Révolution française a-t-elle commencé ?", response: "1789" },
+            { question: "Quel est le continent le plus peuplé du monde ?", response: "LʼAsie" },
+            { question: "Quel organe pompe le sang dans le corps humain ?", response: "Le cœur" },
+            { question: "Comment sʼappelle le passage de lʼeau de lʼétat liquide à lʼétat gazeux ?", response: "Lʼévaporation" },
+            { question: "Quel est le principal gaz de lʼair que nous respirons ?", response: "Le diazote (ou azote)" },
+            { question: "Quelle est la planète la plus proche du Soleil ?", response: "Mercure" },
+            { question: "Avec quel matériau fabrique-t-on principalement le papier ?", response: "Le bois" },
+            { question: "Comment dit-on 'chat' en anglais ?", response: "Cat" },
+            { question: "Quelle est la couleur du mot 'blue' ?", response: "Bleu" },
+            { question: "Traduire 'I am eleven years old.' en français.", response: "Jʼai onze ans." },
+            { question: "Comment demande-t-on 'Comment ça va ?' en anglais ?", response: "How are you?" },
+            { question: "Quel est le contraire de 'big' en anglais ?", response: "Small" },
+            { question: "Comment s’appelle le mélange de deux couleurs primaires ?", response: "couleur secondaire" },
+            { question: "Quel est le nom de la portée composée de cinq lignes en musique ?", response: "la portée" },
+            { question: "Comment s’appelle une œuvre d’art réalisée avec des morceaux découpés et collés ?", response: "collage" },
+            { question: "Quel instrument de musique est souvent utilisé pour garder le rythme dans un groupe ?", response: "batterie" },
+            { question: "Comment nomme-t-on la technique qui consiste à dessiner le contour d’un objet sans lever le crayon ?", response: "dessin en continu" },
+            { question: "Manga : Qui est le héros principal de la série 'Dragon Ball' ?", response: "Son Goku" },
+            { question: "Sport : Quel footballeur français célèbre a remporté la Coupe du Monde 1998 ?", response: "Zinédine Zidane" },
+            { question: "BD : Comment s'appelle le célèbre chien gaulois de la bande dessinée Astérix ?", response: "Idéfix" },
+            { question: "Émission TV : Quelle émission française de téléréalité musicale a révélé de nombreux talents depuis 2001 ?", response: "Nouvelle Star ou The Voice" },
+            { question: "Dessin animé : Quel est le nom du chat bleu-gris qui possède une valise magique dans la série d’animation française ?", response: "Doraemon" },
+            { question: "Jeux vidéo : Quel célèbre plombier italien est le héros de Nintendo ?", response: "Mario" },
+            { question: "Jeux de société : Quel jeu de société consiste à deviner des mots à partir de dessins ?", response: "Pictionnary" },
+            { question: "Musique : Qui est la célèbre chanteuse américaine connue pour ses tubes comme 'Shake It Off' ?", response: "Taylor Swift" },
+            { question: "Culture toulousaine : Quelle couleur est associée à la ville de Toulouse ?", response: "Le rose" },
+            { question: "Manga : Quel est le nom du ninja principal dans 'Naruto' ?", response: "Naruto Uzumaki" },
+            { question: "Sport : Quel sport se pratique sur l’eau avec une planche et une voile ?", response: "La planche à voile" },
+            { question: "BD : Qui est le meilleur ami d’Astérix ?", response: "Obélix" },
+            { question: "Émission TV : Quelle émission française propose des défis et des jeux dans un studio avec des candidats célèbres ?", response: "Fort Boyard" },
+            { question: "Dessin animé : Quel est le petit garçon qui vit dans un monde de monstres dans 'Monstres et Cie' ?", response: "Boo" },
+            { question: "Jeux vidéo : Quel jeu vidéo consiste à capturer des créatures appelées Pokémon ?", response: "Pokémon" },
+            { question: "Jeux de société : Quel jeu de plateau consiste à faire passer tous ses pions dans la maison d’arrivée ?", response: "Le jeu de petits chevaux" },
+            { question: "Musique : Quel groupe français est célèbre pour la chanson 'Dernière danse' ?", response: "Indochine" },
+            { question: "Culture toulousaine : Quelle est la spécialité culinaire de Toulouse faite avec des haricots et de la viande ?", response: "Le cassoulet" },
+            { question: "Manga : Quel manga raconte l’histoire de jeunes chasseurs de trésors à la recherche avec Luffy ?", response: "One Piece" },
+            { question: "Sport : Quel sport se joue avec une balle et un filet, souvent sur la plage ou en salle ?", response: "Le volley-ball" }
+        ];
+
+        let displayedQuestions = [];
+        let counter = 0;
+
+        function displayQuestion() {
+            if (counter >= 50) {
+                alert("Toutes les questions ont été affichées !");
+                return;
+            }
+
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * questions.length);
+            } while (displayedQuestions.includes(randomIndex));
+
+            displayedQuestions.push(randomIndex);
+            const questionObj = questions[randomIndex];
+
+            document.getElementById("question").textContent = questionObj.question;
+            document.getElementById("response").textContent = "Réponse : " + questionObj.response;
+            counter++;
+            document.getElementById("counter").textContent = counter + " / 50";
+        }
+    </script>
+</body>
+</html>
